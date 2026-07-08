@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小葉購物群｜30秒消化健康檢測</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:820px;margin:auto;padding:20px;background:#f4faf4;color:#333}
+h1{color:#2d7a46}
+.card{background:#fff;border-radius:12px;padding:18px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+button{padding:12px 24px;background:#2d7a46;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer}
+.result{display:none}
+.small{font-size:13px;color:#666}
+</style>
+</head>
+<body>
+<h1>🌿 小葉購物群｜30秒消化健康檢測</h1>
+<p>依照最近四週的狀況作答，每題選擇最符合您的情形。</p>
+
+<form id="quiz">
+<div class="card">
+<h3>消化能力（A）</h3>
+<script>
+const A=[
+"吃飽後容易脹氣","吃油膩食物容易不舒服","常覺得消化很慢","常有胃悶或打嗝","吃飯速度很快"];
+const B=[
+"排便不規律","排便後仍覺得沒排乾淨","每天蔬果不足","每週運動不足150分鐘","生活壓力大或常熬夜"];
+document.write(A.map((q,i)=>question(q,"a"+i)).join(""));
+document.write("</div><div class='card'><h3>腸道菌相（B）</h3>");
+document.write(B.map((q,i)=>question(q,"b"+i)).join(""));
+function question(t,n){
+return `<p><b>${t}</b><br>
+<label><input type="radio" name="${n}" value="0" checked> 從不</label>
+<label><input type="radio" name="${n}" value="1"> 偶爾</label>
+<label><input type="radio" name="${n}" value="2"> 經常</label>
+<label><input type="radio" name="${n}" value="3"> 幾乎每天</label></p>`;
+}
+</script>
+</div>
+
+<div class="card">
+<h3>想收到完整個人建議？（選填）</h3>
+<input placeholder="姓名" style="width:100%;padding:8px"><br><br>
+<input placeholder="LINE ID" style="width:100%;padding:8px">
+</div>
+
+<button type="button" onclick="calc()">查看我的結果</button>
+</form>
+
+<div class="card result" id="result"></div>
+
+<p class="small">本檢測僅供健康管理參考，不能取代醫療診斷；若症狀持續或嚴重，請就醫。</p>
+
+<script>
+function calc(){
+let a=0,b=0;
+document.querySelectorAll("[name^='a']:checked").forEach(x=>a+=+x.value);
+document.querySelectorAll("[name^='b']:checked").forEach(x=>b+=+x.value);
+let title="",advice="";
+if(a<8 && b<8){
+title="🟢 生活調整型";
+advice="建議維持低升糖飲食、規律運動、充足睡眠，目前暫不需特別補充保健品。";
+}else if(a>=8 && b<8){
+title="🟡 消化能力加強型";
+advice="建議改善進食速度、減少油膩飲食，可考慮補充消化酵素。";
+}else if(a<8 && b>=8){
+title="🟠 腸道菌相調整型";
+advice="建議增加蔬果、水分與運動，可考慮補充益生菌。";
+}else{
+title="🔴 全面保養型";
+advice="建議從飲食、運動與作息同步改善，可考慮消化酵素搭配益生菌。";
+}
+let r=document.getElementById("result");
+r.style.display="block";
+r.innerHTML=`<h2>${title}</h2>
+<p><b>消化能力(A)：</b>${a}/15<br><b>腸道菌相(B)：</b>${b}/15</p>
+<p>${advice}</p>
+<hr><p><b>小葉購物群</b><br>感謝您的填寫！若留下LINE，我將提供個人化建議。</p>`;
+window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
